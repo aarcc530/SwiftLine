@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "241300911278",
+    "project_id": "swiftline-8c2e3",
+    "storage_bucket": "swiftline-8c2e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241300911278:android:9f06a7c08eae5cd638e93f",
+        "android_client_info": {
+          "package_name": "com.seteam7.SwiftLine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241300911278-1ammocnobjvjj1qqdjhipg44efvug1h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgq-6OpoexZ4ld3LUIV1BmjIzkDrVbHNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241300911278-1ammocnobjvjj1qqdjhipg44efvug1h7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
