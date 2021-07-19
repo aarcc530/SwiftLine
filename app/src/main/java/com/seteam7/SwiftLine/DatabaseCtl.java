@@ -39,12 +39,12 @@ public class DatabaseCtl implements DatabaseControl{
 
 
         //TESTS
-        System.out.println("===============================================");
+        /*System.out.println("===============================================");
         System.out.println("TESTS:");
         //System.out.printf("User Test: %s\n", testUser());
         //testReport();
 
-        System.out.println("===============================================");
+        System.out.println("===============================================");*/
 
         setUser();
     }
@@ -149,10 +149,11 @@ public class DatabaseCtl implements DatabaseControl{
         int reportCount = reports.size();
         int totalTimeWait = 0;
         for (QueryDocumentSnapshot report : reports) {
-            Integer wait = (Integer) report.get("waitLength");
-            if (wait == null)
-                continue;
+            long wait = (long) report.get("waitLength");
             totalTimeWait += wait;
+        }
+        if (reportCount == 0) {
+            return 0;
         }
         return totalTimeWait / reportCount;
     }
