@@ -100,6 +100,9 @@ public class DatabaseCtl implements DatabaseControl{
                             newLocation.put("MapsID", mapsID);
                             newLocation.put("name", "");
                             newLocation.put("location", new GeoPoint(0.0, 0.0));
+                            newLocation.put("reportNum", 0);
+                            newLocation.put("teamRatio", 0.5);
+                            newLocation.put("calcWaitTime", 0);
                             db().collection("locations").document(mapsID).set(newLocation);
                             try {
                                 setUser();
@@ -127,84 +130,6 @@ public class DatabaseCtl implements DatabaseControl{
             return false;
         }
     }
-
-    /*private Location docToRestaurant(String mapsIDInput) {
-        try {
-            CollectionReference reports = db().collection("locations")
-                    .document(mapsIDInput).collection("reports");
-            PipedOutputStream pos = new PipedOutputStream();
-            PipedInputStream pis = new PipedInputStream(pos, 16384);
-            ObjectOutputStream oos = new ObjectOutputStream(pos);
-            ObjectInputStream ois = new ObjectInputStream(pis);
-            CountDownLatch latch = new CountDownLatch(1);
-            Log.d("WRITE", "BEGINNING WRITE");
-            db().collection("locations").document(mapsIDInput).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    Log.d("???", "Is this even being called?");
-                    try {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot snap = task.getResult();
-                            if (!snap.exists()) {
-                                Log.d("WRITE", "RETRIEVE FAILED");
-                                oos.writeObject(null);
-                                oos.close();
-                                pos.close();
-                                latch.countDown();
-                            } else {
-                                System.out.println("Writing First Object");
-                                oos.writeObject(snap.get("mapsID"));
-                                System.out.println("====== Write First Object ======");
-                                oos.writeObject(snap.get("name"));
-                                System.out.println("====== Write Second Object ======");
-                                oos.writeObject(snap.get("location"));
-                                System.out.println("====== Write Third Object ======");
-                                oos.close();
-                                pos.close();
-                                latch.countDown();
-                            }
-
-                        }
-                        else {
-                            Log.d("WRITE", "UNSUCESSFUL");
-                            oos.close();
-                            pos.close();
-                            latch.countDown();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        latch.countDown();
-                    }
-                }
-            });
-
-            latch.await();
-            String mapsID = (String) ois.readObject();
-            if (mapsID == null) {
-                throw new NullPointerException();
-            }
-            System.out.println("====== Read First Object ======");
-            String name = (String) ois.readObject();
-            if (name == null) {
-                throw new NullPointerException();
-            }
-            System.out.println("====== Read Second Object ======");
-            GeoPoint location = (GeoPoint) ois.readObject();
-            if (location == null) {
-                throw new NullPointerException();
-            }
-            System.out.println("====== Read Third Object ======");
-            ois.close();
-            pis.close();
-            int reportNum = reportNum(reports);
-            float teamRatio = calcTeamRatio(reports);
-            int waitTime = calcWaitTime(reports);
-            return new Restaurant(mapsID, name, teamRatio, reportNum, waitTime, location);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 
     public float calcTeamRatio(QuerySnapshot reports) {
         int team1 = 0;
