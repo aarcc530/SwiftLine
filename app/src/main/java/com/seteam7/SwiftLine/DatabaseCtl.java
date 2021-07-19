@@ -39,12 +39,11 @@ public class DatabaseCtl implements DatabaseControl{
 
 
         //TESTS
-
         System.out.println("===============================================");
         System.out.println("TESTS:");
-        System.out.printf("User Test: %s\n", testUser());
+        //System.out.printf("User Test: %s\n", testUser());
         //testReport();
-        //System.out.printf("ReadLoc Test: %s\n", testDocToRestaurant());
+
         System.out.println("===============================================");
 
         setUser();
@@ -53,7 +52,6 @@ public class DatabaseCtl implements DatabaseControl{
     private FirebaseFirestore db() {
         return FirebaseFirestore.getInstance();
     }
-
 
     private void setUser() {
         if (MAC == null) {
