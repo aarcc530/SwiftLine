@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.seteam7.SwiftLine.databinding.ActivityMapsBinding;
@@ -34,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         WifiManager wifiMgr = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
         DatabaseCtl db = new DatabaseCtl(wifiInfo.getMacAddress());
+        Places.initialize(getApplicationContext(), "AIzaSyCtq3cvENlmH-euDbz4VrwYiFUL8VkTw04");
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -61,9 +63,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        final String indyPlaceID = "ChIJA2p5p_9Qa4gRfOq5QPadjtY";
+
+        LatLng indy = new LatLng(39.76838, -86.15804);
+        mMap.addMarker(new MarkerOptions().position(indy).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(indy));
     }
 }
