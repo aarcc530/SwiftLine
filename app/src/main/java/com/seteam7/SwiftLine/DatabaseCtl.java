@@ -1,4 +1,5 @@
 package com.seteam7.SwiftLine;
+import android.app.Activity;
 import android.net.wifi.*;
 import android.os.StrictMode;
 import android.content.Context;
@@ -6,6 +7,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -28,7 +32,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-public class DatabaseCtl implements DatabaseControl{
+public class DatabaseCtl{
 
     private String MAC;
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -38,13 +42,7 @@ public class DatabaseCtl implements DatabaseControl{
         this.MAC = MAC;
 
 
-        //TESTS
-        /*System.out.println("===============================================");
-        System.out.println("TESTS:");
-        //System.out.printf("User Test: %s\n", testUser());
-        //testReport();
-
-        System.out.println("===============================================");*/
+        //sendTestReport();
 
         setUser();
     }
@@ -82,7 +80,7 @@ public class DatabaseCtl implements DatabaseControl{
         });
     }
 
-    @Override
+
     public boolean sendReport(String team, int waitLength, String mapsID) {
         try {
             CollectionReference locations = db().collection("locations");
@@ -97,7 +95,6 @@ public class DatabaseCtl implements DatabaseControl{
                             Map<String, Object> newLocation = new HashMap<>();
                             newLocation.put("MapsID", mapsID);
                             newLocation.put("name", "");
-                            newLocation.put("location", new GeoPoint(0.0, 0.0));
                             newLocation.put("reportNum", 0);
                             newLocation.put("teamRatio", 0.5);
                             newLocation.put("calcWaitTime", 0);
@@ -138,7 +135,7 @@ public class DatabaseCtl implements DatabaseControl{
             else
                 team2++;
         }
-        return ((float) team1) / ((float) team2);
+        return ((float) team1) / ((float) team2 + team1);
     }
 
     private int reportNum(QuerySnapshot reports) {
@@ -173,27 +170,18 @@ public class DatabaseCtl implements DatabaseControl{
         }
     }
 
-    private void testReport() {
-        String testID = "EAuD4dcf210CV1AifWFc3";
-        String testTeam = "team1";
+    private void sendTestReport() {
+        String[] testIDs = {"ChIJh7B58RRQa4gRC-5C44pbDh8", "ChIJmXgHhsGpbIgRCjim2_73gak", "ChIJma3kJaNQa4gRCpb8RKqpIR8"};
         int waitLength = 15;
-        sendReport(testTeam, waitLength, testID);
-        //for (int i = 0; i < (10^6); i++);
-        db().collection("locations").document(testID).collection("reports")
-                .document(MAC + "-"+ LocalDateTime.now().toString())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful() && task.getResult().exists()) {
-                    DocumentSnapshot result = task.getResult();
-                    System.out.printf("!!!Report Test: %s, %s", (String) result.get("team"), (int) result.get("waitLength"));
-                }
-            }
-        });
+        for (String testID : testIDs) {
+            sendReport("team1", waitLength, testID);
+            sendReport("team2", waitLength, testID);
+        }
+
     }
 
-    @Override
-    public void setLocations() {
+
+    public void setLocations(MapsActivity map, GoogleMap nmap) {
         db().collection("locations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -214,13 +202,54 @@ public class DatabaseCtl implements DatabaseControl{
                                 }
                             }
                         });
-                        //DO WHAT YOU NEED TO DO
-                        Log.d("REPLACE", "Do what you need to do");
+                        Location loc = new Restaurant((String) document.get("mapsID"), (String) document.get("name"),
+                                                        (double) document.get("teamRatio"), ((Long) document.get("reportNum")).intValue(),
+                                                        ((Long) document.get("calcWaitTime")).intValue());
+                        map.placeLocation(loc, nmap);
                     }
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
             }
         });
+    }
+    public static BitmapDescriptor getCorrectIcon(double teamRatio, Activity activity) {
+        int roundedPercent = ((Long) Math.round(teamRatio * 10)).intValue();
+        BitmapDescriptor toReturn;
+        switch (roundedPercent) {
+            case 0:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_0", "drawable", activity.getPackageName()));
+                break;
+            case 1:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_10", "drawable", activity.getPackageName()));
+                break;
+            case 2:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_20", "drawable", activity.getPackageName()));
+                break;
+            case 3:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_30", "drawable", activity.getPackageName()));
+                break;
+            case 4:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_40", "drawable", activity.getPackageName()));
+                break;
+            case 6:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_60", "drawable", activity.getPackageName()));
+                break;
+            case 7:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_70", "drawable", activity.getPackageName()));
+                break;
+            case 8:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_80", "drawable", activity.getPackageName()));
+                break;
+            case 9:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_90", "drawable", activity.getPackageName()));
+                break;
+            case 10:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_100", "drawable", activity.getPackageName()));
+                break;
+            default:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_50", "drawable", activity.getPackageName()));
+        }
+        return toReturn;
     }
 }

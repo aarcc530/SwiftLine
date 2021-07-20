@@ -6,17 +6,15 @@ import com.google.firebase.firestore.GeoPoint;
 public class Restaurant implements Location{
     String mapsID;
     String locName;
-    float teamRatio;
+    double teamRatio;
     int waitTime;
-    GeoPoint location;
     int totalReports;
 
-    public Restaurant(String mapsID, String locName, float teamRatio, int totalReports, int waitTime, GeoPoint location) {
+    public Restaurant(String mapsID, String locName, double teamRatio, int totalReports, int waitTime) {
         this.mapsID = mapsID;
         this.locName = locName;
         this.teamRatio = teamRatio;
         this.waitTime = waitTime;
-        this.location = location;
         this.totalReports = totalReports;
     }
 
@@ -39,17 +37,12 @@ public class Restaurant implements Location{
     }
 
     @Override
-    public float getTeamRatio() {
+    public double getTeamRatio() {
         return teamRatio;
     }
 
     @Override
-    public float getWaitTime() {
+    public int getWaitTime() {
         return waitTime;
-    }
-
-    @Override
-    public GeoPoint getLoc() {
-        return location;
     }
 }
