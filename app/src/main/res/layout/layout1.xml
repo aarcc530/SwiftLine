@@ -29,17 +29,6 @@
             tools:layout_editor_absoluteY="253dp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:text="___@email.com"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="298dp" />
-
-        <EditText
             android:id="@+id/editTextTextPersonName"
             android:layout_width="221dp"
             android:layout_height="66dp"
