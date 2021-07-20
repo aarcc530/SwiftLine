@@ -213,7 +213,7 @@ public class DatabaseCtl{
             }
         });
     }
-    public static BitmapDescriptor getCorrectIcon(double teamRatio, Activity activity) {
+    public static BitmapDescriptor getCorrectIconMap(double teamRatio, Activity activity) {
         int roundedPercent = ((Long) Math.round(teamRatio * 10)).intValue();
         BitmapDescriptor toReturn;
         switch (roundedPercent) {
@@ -249,6 +249,45 @@ public class DatabaseCtl{
                 break;
             default:
                 toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("rest_50", "drawable", activity.getPackageName()));
+        }
+        return toReturn;
+    }
+    public static BitmapDescriptor getCorrectIconReport(double teamRatio, Activity activity) {
+        int roundedPercent = ((Long) Math.round(teamRatio * 10)).intValue();
+        BitmapDescriptor toReturn;
+        switch (roundedPercent) {
+            case 0:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_0", "drawable", activity.getPackageName()));
+                break;
+            case 1:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_10", "drawable", activity.getPackageName()));
+                break;
+            case 2:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_20", "drawable", activity.getPackageName()));
+                break;
+            case 3:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_30", "drawable", activity.getPackageName()));
+                break;
+            case 4:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_40", "drawable", activity.getPackageName()));
+                break;
+            case 6:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_60", "drawable", activity.getPackageName()));
+                break;
+            case 7:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_70", "drawable", activity.getPackageName()));
+                break;
+            case 8:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_80", "drawable", activity.getPackageName()));
+                break;
+            case 9:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_90", "drawable", activity.getPackageName()));
+                break;
+            case 10:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_100", "drawable", activity.getPackageName()));
+                break;
+            default:
+                toReturn = BitmapDescriptorFactory.fromResource(activity.getResources().getIdentifier("team_50", "drawable", activity.getPackageName()));
         }
         return toReturn;
     }

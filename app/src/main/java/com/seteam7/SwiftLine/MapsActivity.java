@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
             Place place = response.getPlace();
-            MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIcon(loc.getTeamRatio(), this));
+            MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIconMap(loc.getTeamRatio(), this));
             Log.d("PLACING", place.getId());
             nMap.addMarker(newMarker);
         }).addOnFailureListener((exception) -> {
