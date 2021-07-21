@@ -24,7 +24,6 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="108dp"
         tools:layout_editor_absoluteY="494dp" />
-
     <TextView
         android:id="@+id/TextTextPersonName2"
         android:layout_width="184dp"

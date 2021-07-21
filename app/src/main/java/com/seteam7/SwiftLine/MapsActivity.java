@@ -3,6 +3,7 @@ package com.seteam7.SwiftLine;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.seteam7.SwiftLine.databinding.ActivityMapsBinding;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,8 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    private PlacesClient placesClient;
-    private DatabaseCtl db;
+    private List<Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         StrictMode.setThreadPolicy(policy);
         WifiManager wifiMgr = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-        db = new DatabaseCtl(wifiInfo.getMacAddress());
-
-        Places.initialize(getApplicationContext(), "AIzaSyCtq3cvENlmH-euDbz4VrwYiFUL8VkTw04");
-        placesClient = Places.createClient(this);
+        DatabaseCtl.setupDatabaseCtl(wifiInfo.getMacAddress(), getApplicationContext());
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -87,19 +85,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(indy));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
 
-        db.setLocations(this, mMap);
+        DatabaseCtl.setLocations(this, mMap);
     }
 
     public void placeLocation(Location loc, GoogleMap nMap) {
-
+        if (markers == null)
+            markers = new ArrayList<Marker>();
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG);
         final FetchPlaceRequest request = FetchPlaceRequest.newInstance(loc.getMapsID(), placeFields);
-
-        placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+        for (Marker marker : markers) {
+            if (((String) marker.getTag()).equals(loc.getMapsID())) {
+                marker.setIcon(DatabaseCtl.getCorrectIconMap(loc.getTeamRatio(), this));
+                return;
+            }
+        }
+        DatabaseCtl.placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
             Place place = response.getPlace();
             MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIconMap(loc.getTeamRatio(), this));
             Log.d("PLACING", place.getId());
-            nMap.addMarker(newMarker);
+            Marker newMark = nMap.addMarker(newMarker);
+            newMark.setTag(loc.getMapsID());
+            markers.add(newMark);
+            nMap.setOnMarkerClickListener((marker) -> {
+                String id = (String) marker.getTag();
+                Intent intent = new Intent(MapsActivity.this, CallingForInfo.class);
+                intent.putExtra("id", place.getId());
+                startActivity(intent);
+                return true;
+            });
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 final ApiException apiException = (ApiException) exception;
@@ -107,8 +120,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 final int statusCode = apiException.getStatusCode();
             }
         });
-        ;
-
     }
 
 }

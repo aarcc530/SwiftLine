@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,8 +13,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.libraries.places.api.model.OpeningHours;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.type.LatLng;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 public class CallingForInfo extends AppCompatActivity {
     TextView phone;
@@ -27,15 +36,15 @@ public class CallingForInfo extends AppCompatActivity {
     RatingBar rate;
     ImageButton backButton;
 
+
     public void setData(String address, String phone, String name, String openingTiming,
-                        String website, String openClose, String review, float rating) {
+                        String website, String openClose, float rating) {
         this.address.setText(address);
         this.phone.setText(phone);
         this.name.setText(name);
         this.openingTiming.setText(openingTiming);
         this.website.setText(website);
         this.openClose.setText(openClose);
-        this.review.setText(review);
         this.rate.setRating(rating);
     }
 
@@ -51,12 +60,11 @@ public class CallingForInfo extends AppCompatActivity {
         openingTiming = (TextView)findViewById(R.id.TextTime);
         website = (TextView)findViewById(R.id.TextTextPersonName2);
         openClose = (TextView)findViewById(R.id.TextTextPersonName3);
-        review = (TextView)findViewById(R.id.TextTextMultiLine);
         rate = (RatingBar) findViewById(R.id.ratingBar);
         backButton = (ImageButton)findViewById(R.id.imageButton3);
 
 
-        //TODO
+
 
         report.setOnClickListener(new View.OnClickListener() {
 
@@ -69,10 +77,51 @@ public class CallingForInfo extends AppCompatActivity {
 
         backButton.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(CallingForInfo.this, MapsActivity.class);
-                startActivity(intent);
+              public void onClick(View v) {
+                  Intent intent = new Intent(CallingForInfo.this, MapsActivity.class);
+                  startActivity(intent);
+              }
+          });
+        fillRestScreen(getIntent().getStringExtra("id"));
+    }
+    public void fillRestScreen(String id) {
+
+        final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID,
+                Place.Field.ADDRESS,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.BUSINESS_STATUS,
+                Place.Field.LAT_LNG,
+                Place.Field.NAME,
+                Place.Field.OPENING_HOURS,
+                Place.Field.PHONE_NUMBER,
+                Place.Field.RATING,
+                Place.Field.WEBSITE_URI,
+                Place.Field.UTC_OFFSET);
+        final FetchPlaceRequest request = FetchPlaceRequest.newInstance(id, placeFields);
+
+        DatabaseCtl.placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+            Place place = response.getPlace();
+            OpeningHours oh = place.getOpeningHours();
+            String hours;
+            String open;
+            if (oh == null) {
+                hours = "Unknown";
+                open = "Unknown";
+            } else{
+                List<String> weekdayText = place.getOpeningHours().getWeekdayText();
+                hours = weekdayText.get(LocalDate.now().getDayOfWeek().getValue());
+                open = (place.isOpen() ? "Open" : "Closed");
+            }
+            Uri uri = place.getWebsiteUri();
+            String uri_str = (uri == null ? "Unknown" : uri.toString());
+            float rating = (place.getRating() == null ? 0f : place.getRating().floatValue());
+            setData(place.getAddress(), place.getPhoneNumber(), place.getName(),
+                    hours, uri_str, open, rating);
+        }).addOnFailureListener((exception) -> {
+            if (exception instanceof ApiException) {
+                final ApiException apiException = (ApiException) exception;
+                Log.e("DATA", "Place not found: " + exception.getMessage());
+                final int statusCode = apiException.getStatusCode();
             }
         });
     }

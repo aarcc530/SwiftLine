@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|top|center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textTextPersonName"
+        android:layout_width="221dp"
+        android:layout_height="66dp"
+        android:ems="10"
+        android:text="Restaurant 1" />
+
+    <RatingBar
+        android:id="@+id/ratingBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp" />
+
+    <TextView
+        android:id="@+id/textTextPersonName3"
+        android:layout_width="183dp"
+        android:layout_height="37dp"
+        android:ems="10"
+        android:text="Open/Closed" />
+
+    <TextView
+        android:id="@+id/textTime"
+        android:layout_width="180dp"
+        android:layout_height="54dp"
+        android:ems="10"
+        android:text="Opening Timings" />
+
+    <TextView
+        android:id="@+id/textPhone"
+        android:layout_width="183dp"
+        android:layout_height="19dp"
+        android:ems="10"
+        android:text="+1 (___)-___-____" />
+
+    <TextView
+        android:id="@+id/textTextEmailAddress"
+        android:layout_width="184dp"
+        android:layout_height="21dp"
+        android:ems="10"
+        android:text="address" />
+
+    <TextView
+        android:id="@+id/textTextPersonName2"
+        android:layout_width="184dp"
+        android:layout_height="43dp"
+        android:ems="10"
+        android:text="website" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="194dp"
+        android:layout_height="88dp"
+        android:text="Report Time and Team" />
+</LinearLayout>

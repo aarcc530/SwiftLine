@@ -6,12 +6,15 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
 
@@ -34,24 +37,24 @@ import java.util.concurrent.CountDownLatch;
 
 public class DatabaseCtl{
 
-    private String MAC;
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    private static String MAC;
+    public static PlacesClient placesClient;
 
-    public DatabaseCtl(String MAC) {
+    public static void setupDatabaseCtl(String MACaddr, Context context) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        this.MAC = MAC;
+        MAC = MACaddr;
 
-
-        //sendTestReport();
-
+        Places.initialize(context, "AIzaSyCtq3cvENlmH-euDbz4VrwYiFUL8VkTw04");
+        placesClient = Places.createClient(context);
         setUser();
     }
 
-    private FirebaseFirestore db() {
+    private static FirebaseFirestore db() {
         return FirebaseFirestore.getInstance();
     }
 
-    private void setUser() {
+    private static void setUser() {
         if (MAC == null) {
             MAC = "FF:FF:FF:12:34:56";
         }
@@ -81,7 +84,7 @@ public class DatabaseCtl{
     }
 
 
-    public boolean sendReport(String team, int waitLength, String mapsID) {
+    public static boolean sendReport(String team, int waitLength, String mapsID) {
         try {
             CollectionReference locations = db().collection("locations");
             DocumentReference rest = locations.document(mapsID);
@@ -126,7 +129,7 @@ public class DatabaseCtl{
         }
     }
 
-    public float calcTeamRatio(QuerySnapshot reports) {
+    public static float calcTeamRatio(QuerySnapshot reports) {
         int team1 = 0;
         int team2 = 0;
         for (QueryDocumentSnapshot report : reports) {
@@ -138,11 +141,11 @@ public class DatabaseCtl{
         return ((float) team1) / ((float) team2 + team1);
     }
 
-    private int reportNum(QuerySnapshot reports) {
+    private static int reportNum(QuerySnapshot reports) {
         return reports.size();
     }
 
-    private int calcWaitTime(QuerySnapshot reports) {
+    private static int calcWaitTime(QuerySnapshot reports) {
         int reportCount = reports.size();
         int totalTimeWait = 0;
         for (QueryDocumentSnapshot report : reports) {
@@ -155,14 +158,14 @@ public class DatabaseCtl{
         return totalTimeWait / reportCount;
     }
 
-    private String setUserWrapper() throws SocketException, UnknownHostException {
+    private static String setUserWrapper() throws SocketException, UnknownHostException {
         setUser();
         return MAC;
     }
 
-    private boolean testUser() {
+    private static boolean testUser() {
         try {
-            String testMAC = this.setUserWrapper();
+            String testMAC = setUserWrapper();
             return MAC.equals(testMAC);
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,7 +173,7 @@ public class DatabaseCtl{
         }
     }
 
-    private void sendTestReport() {
+    private static void sendTestReport() {
         String[] testIDs = {"ChIJh7B58RRQa4gRC-5C44pbDh8", "ChIJmXgHhsGpbIgRCjim2_73gak", "ChIJma3kJaNQa4gRCpb8RKqpIR8"};
         int waitLength = 15;
         for (String testID : testIDs) {
@@ -181,31 +184,37 @@ public class DatabaseCtl{
     }
 
 
-    public void setLocations(MapsActivity map, GoogleMap nmap) {
+    public static void setLocations(MapsActivity map, GoogleMap nmap) {
         db().collection("locations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        document.getReference().collection("reports").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    QuerySnapshot result = task.getResult();
-                                    float teamRatio = calcTeamRatio(result);
-                                    int waitTime = calcWaitTime(result);
-                                    int reportNum = reportNum(result);
-                                    document.getReference().update("calcWaitTime", waitTime);
-                                    document.getReference().update("reportNum", reportNum);
-                                    document.getReference().update("teamRatio", teamRatio);
-                                } else {
-                                    Log.d("TAG", "Error getting documents: ", task.getException());
-                                }
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        doc.getReference().addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent( DocumentSnapshot document, @Nullable FirebaseFirestoreException error) {
+                                document.getReference().collection("reports").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            QuerySnapshot result = task.getResult();
+                                            float teamRatio = calcTeamRatio(result);
+                                            int waitTime = calcWaitTime(result);
+                                            int reportNum = reportNum(result);
+                                            document.getReference().update("calcWaitTime", waitTime);
+                                            document.getReference().update("reportNum", reportNum);
+                                            document.getReference().update("teamRatio", teamRatio);
+                                        } else {
+                                            Log.d("TAG", "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                                Location loc = new Restaurant((String) document.get("mapsID"), (String) document.get("name"),
+                                        (double) document.get("teamRatio"), ((Long) document.get("reportNum")).intValue(),
+                                        ((Long) document.get("calcWaitTime")).intValue());
+                                map.placeLocation(loc, nmap);
                             }
-                        });
-                        Location loc = new Restaurant((String) document.get("mapsID"), (String) document.get("name"),
-                                                        (double) document.get("teamRatio"), ((Long) document.get("reportNum")).intValue(),
-                                                        ((Long) document.get("calcWaitTime")).intValue());
-                        map.placeLocation(loc, nmap);
+                        }
+                        );
                     }
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());
