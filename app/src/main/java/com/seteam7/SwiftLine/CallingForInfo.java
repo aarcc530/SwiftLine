@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class CallingForInfo extends AppCompatActivity {
     TextView openClose;
     TextView review;
     RatingBar rate;
+    ImageButton backButton;
 
     public void setData(String address, String phone, String name, String openingTiming,
                         String website, String openClose, String review, float rating) {
@@ -51,6 +53,7 @@ public class CallingForInfo extends AppCompatActivity {
         openClose = (TextView)findViewById(R.id.TextTextPersonName3);
         review = (TextView)findViewById(R.id.TextTextMultiLine);
         rate = (RatingBar) findViewById(R.id.ratingBar);
+        backButton = (ImageButton)findViewById(R.id.imageButton3);
 
 
         //TODO
@@ -60,6 +63,15 @@ public class CallingForInfo extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent intent = new Intent(CallingForInfo.this, NextCallingForInfo.class);
+                startActivity(intent);
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(CallingForInfo.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
