@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <TextView
             android:id="@+id/editTextTextPersonName4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,6 +108,15 @@
             tools:layout_editor_absoluteX="295dp"
             tools:layout_editor_absoluteY="121dp"
             tools:srcCompat="@tools:sample/avatars"
+            tools:ignore="MissingConstraints" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/quantum_ic_arrow_back_grey600_24"
+            tools:layout_editor_absoluteX="31dp"
+            tools:layout_editor_absoluteY="27dp"
             tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
