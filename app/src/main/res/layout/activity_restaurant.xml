@@ -154,7 +154,7 @@
         android:id="@+id/ReportButton"
         android:layout_width="200dp"
         android:layout_height="106dp"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="16dp"
         android:text="@string/placeholder_report_text"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"

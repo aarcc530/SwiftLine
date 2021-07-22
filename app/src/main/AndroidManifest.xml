@@ -43,8 +43,10 @@
         </activity>
         <activity
             android:name=".RestaurantActivity"
-            android:label="layout1">
-        </activity>
+            android:label="activity_restaurant" />
+        <activity
+            android:name=".ReportActivity"
+            android:label="activity_report" />
     </application>
 
 </manifest>

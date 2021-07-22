@@ -55,6 +55,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
         report.setOnClickListener(v -> {
             Intent intent = new Intent(RestaurantActivity.this, ReportActivity.class);
+            Intent oldIntent = getIntent();
+            intent.putExtra("id", oldIntent.getStringExtra("id"));
+            intent.putExtra("ratio", getIntent().getDoubleExtra("ratio", 0.5));
+            intent.putExtra("waitTime", getIntent().getIntExtra("waitTime", -1));
             startActivity(intent);
         });
 
