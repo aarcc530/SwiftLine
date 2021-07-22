@@ -40,79 +40,31 @@ public class ReportActivity extends AppCompatActivity {
 
         //TODO
 
-        team1.setOnClickListener(new View.OnClickListener() {
+        team1.setOnClickListener(v -> storage1 = "team1");
 
-            public void onClick(View v) {
-                storage1 = "team1";
-            }
+        team2.setOnClickListener(v -> storage1 = "team2");
+
+        fiveMin.setOnClickListener(v -> storage2 = 5);
+
+        tenMin.setOnClickListener(v -> storage2 = 10);
+
+        fifteenMin.setOnClickListener(v -> storage2 = 15);
+
+        twentyMin.setOnClickListener(v -> storage2 = 20);
+
+        thirtyMin.setOnClickListener(v -> storage2 = 30);
+
+        fortyFiveMin.setOnClickListener(v -> storage2 = 45);
+
+        submit.setOnClickListener(v -> {
+            DatabaseCtl.sendReport(storage1, storage2, mapsID);
+            Intent intent = new Intent(ReportActivity.this, MapsActivity.class);
+            startActivity(intent);
         });
 
-        team2.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage1 = "team2";
-            }
-        });
-
-        fiveMin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage2 = 5;
-            }
-        });
-
-        tenMin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage2 = 10;
-            }
-        });
-
-        fifteenMin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage2 = 15;
-            }
-        });
-
-        twentyMin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage2 = 20;
-            }
-        });
-
-        thirtyMin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage2 = 30;
-            }
-        });
-
-        fortyFiveMin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                storage2 = 45;
-            }
-        });
-
-        //MapsID
-
-        submit.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                DatabaseCtl.sendReport(storage1, storage2, mapsID);
-                Intent intent = new Intent(ReportActivity.this, MapsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Intent intent = new Intent(ReportActivity.this, RestaurantActivity.class);
-                startActivity(intent);
-            }
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ReportActivity.this, RestaurantActivity.class);
+            startActivity(intent);
         });
     }
 }
