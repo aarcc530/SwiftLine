@@ -5,114 +5,192 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="146dp"
-        android:layout_height="89dp"
-        android:text="submit"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="132dp"
-        tools:layout_editor_absoluteY="560dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reportToolBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="136dp"
-        android:layout_height="52dp"
-        android:text="30 minutes"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="215dp"
-        tools:layout_editor_absoluteY="354dp" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/ReportToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toStartOf="@+id/ReportBackButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="80dp"
-        android:layout_height="88dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="296dp"
-        tools:layout_editor_absoluteY="132dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageButton
+            android:id="@+id/ReportBackButton"
+            android:layout_width="53dp"
+            android:layout_height="match_parent"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/placeholder_content_description"
+            app:srcCompat="@drawable/quantum_ic_arrow_back_grey600_24"
+            app:tint="#FFFFFF"
+            tools:ignore="MissingConstraints" />
 
-    <ImageButton
-        android:id="@+id/RefreshButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/quantum_ic_arrow_back_grey600_24"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="47dp" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="136dp"
-        android:layout_height="52dp"
-        android:text="5 Minutes"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="281dp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="130dp"
-        android:layout_height="121dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="132dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/editTextTextPersonName4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/ReportRestName"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Report"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="55dp" />
+        android:text="@string/placeholder_restaurant_name"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reportToolBarLayout" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ReportTeamSelection"
+        android:layout_width="match_parent"
+        android:layout_height="159sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ReportRestName">
+
+        <ImageButton
+            android:id="@+id/team2Button"
+            android:layout_width="80dp"
+            android:layout_height="88dp"
+            android:contentDescription="@string/placeholder_content_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toRightOf="@+id/ReportRestIcon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/ReportRestIcon"
+            android:layout_width="159dp"
+            android:layout_height="159dp"
+            android:contentDescription="@string/placeholder_content_description"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/team_50" />
+
+        <ImageButton
+            android:id="@+id/team1Button"
+            android:layout_width="80dp"
+            android:layout_height="88dp"
+            android:contentDescription="@string/placeholder_content_description"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/ReportRestIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/TimeButtonColumns"
+        android:layout_width="match_parent"
+        android:layout_height="265dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/ReportTeamSelection">
+
+        <LinearLayout
+            android:id="@+id/LeftButtonColumn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/Button5Minutes"
+                android:layout_width="159dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.33"
+                android:text="5 Minutes"
+                app:layout_constaintLeft_toLeftOf="parent"
+                app:layout_constaintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <Button
+                android:id="@+id/Button10Minutes"
+                android:layout_width="159dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.33"
+                android:text="10 minutes"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <Button
+                android:id="@+id/Button15Minutes"
+                android:layout_width="159dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.33"
+                android:text="15 minutes"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/RightButtonColumn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/Button20Minutes"
+                android:layout_width="159dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.33"
+                android:text="20 minutes"
+                app:layout_constaintLeft_toLeftOf="parent"
+                app:layout_constaintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <Button
+                android:id="@+id/Button30Minutes"
+                android:layout_width="159dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.33"
+                android:text="30 minutes"
+                app:layout_constaintLeft_toLeftOf="parent"
+                app:layout_constaintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <Button
+                android:id="@+id/Button45Minutes"
+                android:layout_width="159dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.33"
+                android:text="45 minutes"
+                app:layout_constaintLeft_toLeftOf="parent"
+                app:layout_constaintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/button4"
-        android:layout_width="136dp"
-        android:layout_height="52dp"
-        android:text="15 minutes"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="429dp" />
+        android:id="@+id/submitReportButton"
+        android:layout_width="146dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:text="submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/TimeButtonColumns" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="136dp"
-        android:layout_height="52dp"
-        android:text="10 minutes"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="354dp" />
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="136dp"
-        android:layout_height="52dp"
-        android:text="45 minutes"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="215dp"
-        tools:layout_editor_absoluteY="429dp" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="80dp"
-        android:layout_height="88dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="132dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="136dp"
-        android:layout_height="52dp"
-        android:text="20 minutes"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="215dp"
-        tools:layout_editor_absoluteY="281dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
