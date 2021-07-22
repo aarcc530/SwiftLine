@@ -85,12 +85,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Intent intent = new Intent(MapsActivity.this, RestaurantActivity.class);
             intent.putExtra("id", info.id);
             intent.putExtra("ratio", info.ratio);
+            intent.putExtra("waitTime", info.waitTime);
             startActivity(intent);
             return true;
         });
     }
 
-    public void placeLocation(String loc, double ratio, GoogleMap nMap) {
+    public void placeLocation(String loc, double ratio, int waitTime, GoogleMap nMap) {
         if (markers == null)
             markers = new ArrayList<Marker>();
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG);
@@ -109,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIconMap(ratio, this));
             Log.d("PLACING", place.getId());
             Marker newMark = nMap.addMarker(newMarker);
-            newMark.setTag(new InfoTuple(place.getId(), ratio));
+            newMark.setTag(new InfoTuple(place.getId(), ratio, waitTime));
             markers.add(newMark);
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
@@ -124,9 +125,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private class InfoTuple {
         public String id;
         public double ratio;
-        public InfoTuple (String id, double ratio) {
+        public int waitTime;
+        public InfoTuple (String id, double ratio, int waitTime) {
             this.id = id;
             this.ratio = ratio;
+            this.waitTime = waitTime;
         }
     }
 }

@@ -175,7 +175,7 @@ public class DatabaseCtl{
                                     Log.d("TAG", "Error getting documents: ", task1.getException());
                                 }
                             });
-                            map.placeLocation((String) document.get("mapsID"), (document.get("teamRatio") == null ? 0.5 : (double) document.get("teamRatio")), nmap);
+                            map.placeLocation((String) document.get("mapsID"), (document.get("teamRatio") == null ? 0.5 : (double) document.get("teamRatio")), (document.get("calcWaitTime") == null ? -1 : ((Long) document.get("calcWaitTime")).intValue()), nmap);
                         }
                         );
                     }
