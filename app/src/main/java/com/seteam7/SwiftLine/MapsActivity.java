@@ -100,7 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         final FetchPlaceRequest request = FetchPlaceRequest.newInstance(loc, placeFields);
         for (Marker marker : markers) {
-            if (((String) marker.getTag()).equals(loc)) {
+            if (((InfoTuple) marker.getTag()).id.equals(loc)) {
                 marker.setIcon(DatabaseCtl.getCorrectIconMap(ratio, this));
                 return;
             }

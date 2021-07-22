@@ -80,6 +80,7 @@ public class DatabaseCtl{
 
     public static void sendReport(String team, int waitLength, String mapsID) {
         try {
+            Log.d("REPORT", String.format("Sending Report for ID %s", mapsID));
             CollectionReference locations = db().collection("locations");
             DocumentReference rest = locations.document(mapsID);
             rest.get().addOnCompleteListener(task -> {

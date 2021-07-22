@@ -55,8 +55,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         report.setOnClickListener(v -> {
             Intent intent = new Intent(RestaurantActivity.this, ReportActivity.class);
-            Intent oldIntent = getIntent();
-            intent.putExtra("id", oldIntent.getStringExtra("id"));
+            intent.putExtra("id", getIntent().getStringExtra("id"));
             intent.putExtra("ratio", getIntent().getDoubleExtra("ratio", 0.5));
             intent.putExtra("waitTime", getIntent().getIntExtra("waitTime", -1));
             startActivity(intent);
@@ -81,7 +80,7 @@ public class RestaurantActivity extends AppCompatActivity {
         this.openClose.setText(openClose);
         this.rate.setRating(rating);
         this.teamIcon.setImageResource(DatabaseCtl.getCorrectIconReport(teamRatio, this));
-        this.waitTime.setText(String.format("Approximate Wait Time:\n %s minutes", (waitTime == -1 ? "Unknown" : waitTime)));
+        this.waitTime.setText(String.format("Approximate Wait Time: %s minutes", (waitTime == -1 ? "Unknown" : waitTime)));
     }
 
     public void fillRestScreen(String id, double ratio, int calcWaitTime) {
@@ -110,6 +109,7 @@ public class RestaurantActivity extends AppCompatActivity {
             } else{
                 List<String> weekdayText = place.getOpeningHours().getWeekdayText();
                 hours = weekdayText.get(LocalDate.now().getDayOfWeek().getValue());
+                hours = hours.substring(hours.indexOf(":") + 2);
                 open = (place.isOpen() ? "Open" : "Closed");
             }
             Uri uri = place.getWebsiteUri();

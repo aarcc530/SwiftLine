@@ -60,7 +60,8 @@
         <ImageButton
             android:id="@+id/team2Button"
             android:layout_width="80dp"
-            android:layout_height="88dp"
+            android:layout_height="114dp"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="@string/placeholder_content_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -68,7 +69,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@drawable/team_icon2" />
 
         <ImageView
             android:id="@+id/ReportRestIcon"
@@ -84,7 +85,8 @@
         <ImageButton
             android:id="@+id/team1Button"
             android:layout_width="80dp"
-            android:layout_height="88dp"
+            android:layout_height="114dp"
+            android:backgroundTint="#00FFFFFF"
             android:contentDescription="@string/placeholder_content_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -92,7 +94,7 @@
             app:layout_constraintRight_toLeftOf="@+id/ReportRestIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@drawable/team_icon1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -117,8 +119,6 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.33"
                 android:text="5 Minutes"
-                app:layout_constaintLeft_toLeftOf="parent"
-                app:layout_constaintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed" />
 
             <Button
@@ -153,8 +153,6 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.33"
                 android:text="20 minutes"
-                app:layout_constaintLeft_toLeftOf="parent"
-                app:layout_constaintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed" />
 
             <Button
@@ -163,8 +161,6 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.33"
                 android:text="30 minutes"
-                app:layout_constaintLeft_toLeftOf="parent"
-                app:layout_constaintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed" />
 
             <Button
@@ -173,8 +169,6 @@
                 android:layout_height="40dp"
                 android:layout_weight="0.33"
                 android:text="45 minutes"
-                app:layout_constaintLeft_toLeftOf="parent"
-                app:layout_constaintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed" />
 
         </LinearLayout>
