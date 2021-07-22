@@ -1,7 +1,6 @@
 package com.seteam7.SwiftLine;
 
 import android.content.Intent;
-import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,11 +16,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.libraries.places.api.model.OpeningHours;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.type.LatLng;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class CallingForInfo extends AppCompatActivity {
@@ -53,26 +50,22 @@ public class CallingForInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout1);
 
-        report = (Button)findViewById(R.id.button);
-        phone = (TextView)findViewById(R.id.TextPhone);
-        name = (TextView)findViewById(R.id.TextTextPersonName);
-        address = (TextView)findViewById(R.id.TextTextEmailAddress2);
-        openingTiming = (TextView)findViewById(R.id.TextTime);
-        website = (TextView)findViewById(R.id.TextTextPersonName2);
-        openClose = (TextView)findViewById(R.id.TextTextPersonName3);
-        rate = (RatingBar) findViewById(R.id.ratingBar);
-        backButton = (ImageButton)findViewById(R.id.imageButton3);
+        report = (Button)findViewById(R.id.ReportButton);
+        phone = (TextView)findViewById(R.id.RestPhone);
+        name = (TextView)findViewById(R.id.RestName);
+        address = (TextView)findViewById(R.id.TestAddress);
+        openingTiming = (TextView)findViewById(R.id.RestOpenTime);
+        website = (TextView)findViewById(R.id.RestWebsiteURL);
+        openClose = (TextView)findViewById(R.id.RestStatus);
+        rate = (RatingBar)findViewById(R.id.ratingBar);
+        backButton = (ImageButton)findViewById(R.id.RestBackButton);
 
 
 
 
-        report.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(CallingForInfo.this, NextCallingForInfo.class);
-                startActivity(intent);
-            }
+        report.setOnClickListener(v -> {
+            Intent intent = new Intent(CallingForInfo.this, NextCallingForInfo.class);
+            startActivity(intent);
         });
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -82,10 +75,11 @@ public class CallingForInfo extends AppCompatActivity {
                   startActivity(intent);
               }
           });
+
         fillRestScreen(getIntent().getStringExtra("id"));
     }
     public void fillRestScreen(String id) {
-
+        Log.d("SCREEN", "Filling Screen");
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID,
                 Place.Field.ADDRESS,
                 Place.Field.ADDRESS_COMPONENTS,

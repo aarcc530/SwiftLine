@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,7 +36,7 @@ public class NextCallingForInfo extends AppCompatActivity {
         submit = (Button) findViewById(R.id.button8);
         team1 = (ImageButton) findViewById(R.id.imageButton);
         team2 = (ImageButton) findViewById(R.id.imageButton2);
-        backButton = (ImageButton) findViewById(R.id.imageButton4);
+        backButton = (ImageButton) findViewById(R.id.RefreshButton);
 
         //TODO
 

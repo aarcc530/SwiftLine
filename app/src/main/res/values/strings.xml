@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">SwiftLine</string>
     <string name="title_activity_maps">Map</string>
+    <string name="placeholder_report_text">Report Time and Team</string>
+    <string name="placeholder_website">Website URL</string>
+    <string name="placeholder_restaurant_name">Restaurant</string>
+    <string name="placeholder_address">123 Purdue Ln</string>
+    <string name="placeholder_status">OPEN</string>
+    <string name="placeholder_times">Monday 11AM-5PM</string>
+    <string name="placeholder_phone">+1 (555)-555-5555</string>
+    <string name="placeholder_content_description">placeholder</string>
 </resources>

@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private List<Marker> markers;
+    private ImageButton refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        refresh = (ImageButton) findViewById(R.id.RefreshButton);
 
-
+        refresh.setOnClickListener(v -> {
+            DatabaseCtl.setLocations(this, mMap);
+            DatabaseCtl.updateLocations();
+        });
     }
 
 
@@ -88,23 +94,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DatabaseCtl.setLocations(this, mMap);
     }
 
-    public void placeLocation(Location loc, GoogleMap nMap) {
+    public void placeLocation(String loc, double ratio, GoogleMap nMap) {
         if (markers == null)
             markers = new ArrayList<Marker>();
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG);
-        final FetchPlaceRequest request = FetchPlaceRequest.newInstance(loc.getMapsID(), placeFields);
+        if (loc == null) {
+            return;
+        }
+        final FetchPlaceRequest request = FetchPlaceRequest.newInstance(loc, placeFields);
         for (Marker marker : markers) {
-            if (((String) marker.getTag()).equals(loc.getMapsID())) {
-                marker.setIcon(DatabaseCtl.getCorrectIconMap(loc.getTeamRatio(), this));
+            if (((String) marker.getTag()).equals(loc)) {
+                marker.setIcon(DatabaseCtl.getCorrectIconMap(ratio, this));
                 return;
             }
         }
         DatabaseCtl.placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
             Place place = response.getPlace();
-            MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIconMap(loc.getTeamRatio(), this));
+            MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIconMap(ratio, this));
             Log.d("PLACING", place.getId());
             Marker newMark = nMap.addMarker(newMarker);
-            newMark.setTag(loc.getMapsID());
+            newMark.setTag(loc);
             markers.add(newMark);
             nMap.setOnMarkerClickListener((marker) -> {
                 String id = (String) marker.getTag();

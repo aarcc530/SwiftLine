@@ -33,7 +33,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/RefreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/quantum_ic_arrow_back_grey600_24"
