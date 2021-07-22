@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CallingForInfo"
+            android:name=".RestaurantActivity"
             android:label="layout1">
         </activity>
     </application>

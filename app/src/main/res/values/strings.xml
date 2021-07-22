@@ -9,4 +9,5 @@
     <string name="placeholder_times">Monday 11AM-5PM</string>
     <string name="placeholder_phone">+1 (555)-555-5555</string>
     <string name="placeholder_content_description">placeholder</string>
+    <string name="placeholder_wait_time">Approximate Wait Time: 15 minutes</string>
 </resources>

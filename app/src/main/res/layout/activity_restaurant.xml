@@ -100,6 +100,19 @@
         android:contentDescription="@string/placeholder_content_description"/>
 
     <TextView
+        android:id="@+id/WaitTime"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:ems="10"
+        android:text="@string/placeholder_wait_time"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RestTeamIcon"
+        tools:layout_editor_absoluteY="412dp" />
+
+    <TextView
         android:id="@+id/RestWebsiteURL"
         android:layout_width="0dp"
         android:layout_height="43dp"
@@ -109,8 +122,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RestTeamIcon"
-        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@+id/WaitTime"
         tools:layout_editor_absoluteY="412dp" />
 
     <TextView

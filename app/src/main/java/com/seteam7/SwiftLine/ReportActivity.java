@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class NextCallingForInfo extends AppCompatActivity {
+public class ReportActivity extends AppCompatActivity {
     Button fiveMin;
     Button tenMin;
     Button fifteenMin;
@@ -25,7 +25,7 @@ public class NextCallingForInfo extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout2);
+        setContentView(R.layout.activity_report);
 
         fiveMin = (Button) findViewById(R.id.button2);
         tenMin = (Button) findViewById(R.id.button3);
@@ -102,7 +102,7 @@ public class NextCallingForInfo extends AppCompatActivity {
 
             public void onClick(View v) {
                 DatabaseCtl.sendReport(storage1, storage2, mapsID);
-                Intent intent = new Intent(NextCallingForInfo.this, MapsActivity.class);
+                Intent intent = new Intent(ReportActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
@@ -110,7 +110,7 @@ public class NextCallingForInfo extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent intent = new Intent(NextCallingForInfo.this, CallingForInfo.class);
+                Intent intent = new Intent(ReportActivity.this, RestaurantActivity.class);
                 startActivity(intent);
             }
         });

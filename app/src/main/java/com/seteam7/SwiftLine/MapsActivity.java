@@ -1,6 +1,5 @@
 package com.seteam7.SwiftLine;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -16,19 +15,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.seteam7.SwiftLine.databinding.ActivityMapsBinding;
 
 import java.util.ArrayList;
@@ -37,7 +28,7 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private GoogleMap map;
     private ActivityMapsBinding binding;
     private List<Marker> markers;
     private ImageButton refresh;
@@ -63,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         refresh = (ImageButton) findViewById(R.id.RefreshButton);
 
         refresh.setOnClickListener(v -> {
-            DatabaseCtl.setLocations(this, mMap);
+            DatabaseCtl.setLocations(this, map);
             DatabaseCtl.updateLocations();
         });
     }
@@ -80,18 +71,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-
-        // Add a marker in Sydney and move the camera
+        map = googleMap;
 
         final String indyPlaceID = "ChIJA2p5p_9Qa4gRfOq5QPadjtY";
 
         LatLng indy = new LatLng(39.76838, -86.15804);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(indy));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+        map.moveCamera(CameraUpdateFactory.newLatLng(indy));
+        map.moveCamera(CameraUpdateFactory.zoomTo(11));
 
-        DatabaseCtl.setLocations(this, mMap);
+        DatabaseCtl.setLocations(this, map);
+        map.setOnMarkerClickListener((marker) -> {
+            InfoTuple info = (InfoTuple) marker.getTag();
+            Intent intent = new Intent(MapsActivity.this, RestaurantActivity.class);
+            intent.putExtra("id", info.id);
+            intent.putExtra("ratio", info.ratio);
+            startActivity(intent);
+            return true;
+        });
     }
 
     public void placeLocation(String loc, double ratio, GoogleMap nMap) {
@@ -113,15 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MarkerOptions newMarker = new MarkerOptions().position(place.getLatLng()).icon(DatabaseCtl.getCorrectIconMap(ratio, this));
             Log.d("PLACING", place.getId());
             Marker newMark = nMap.addMarker(newMarker);
-            newMark.setTag(loc);
+            newMark.setTag(new InfoTuple(place.getId(), ratio));
             markers.add(newMark);
-            nMap.setOnMarkerClickListener((marker) -> {
-                String id = (String) marker.getTag();
-                Intent intent = new Intent(MapsActivity.this, CallingForInfo.class);
-                intent.putExtra("id", place.getId());
-                startActivity(intent);
-                return true;
-            });
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 final ApiException apiException = (ApiException) exception;
@@ -131,4 +120,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+
+    private class InfoTuple {
+        public String id;
+        public double ratio;
+        public InfoTuple (String id, double ratio) {
+            this.id = id;
+            this.ratio = ratio;
+        }
+    }
 }

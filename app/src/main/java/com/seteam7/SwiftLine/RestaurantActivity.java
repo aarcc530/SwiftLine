@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +22,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-public class CallingForInfo extends AppCompatActivity {
+public class RestaurantActivity extends AppCompatActivity {
     TextView phone;
     Button report;
     TextView name;
@@ -29,26 +30,14 @@ public class CallingForInfo extends AppCompatActivity {
     TextView openingTiming;
     TextView website;
     TextView openClose;
-    TextView review;
+    ImageView teamIcon;
     RatingBar rate;
     ImageButton backButton;
-
-
-    public void setData(String address, String phone, String name, String openingTiming,
-                        String website, String openClose, float rating) {
-        this.address.setText(address);
-        this.phone.setText(phone);
-        this.name.setText(name);
-        this.openingTiming.setText(openingTiming);
-        this.website.setText(website);
-        this.openClose.setText(openClose);
-        this.rate.setRating(rating);
-    }
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout1);
+        setContentView(R.layout.activity_restaurant);
 
         report = (Button)findViewById(R.id.ReportButton);
         phone = (TextView)findViewById(R.id.RestPhone);
@@ -59,26 +48,34 @@ public class CallingForInfo extends AppCompatActivity {
         openClose = (TextView)findViewById(R.id.RestStatus);
         rate = (RatingBar)findViewById(R.id.ratingBar);
         backButton = (ImageButton)findViewById(R.id.RestBackButton);
-
-
-
+        teamIcon = (ImageView)findViewById(R.id.RestTeamIcon);
 
         report.setOnClickListener(v -> {
-            Intent intent = new Intent(CallingForInfo.this, NextCallingForInfo.class);
+            Intent intent = new Intent(RestaurantActivity.this, ReportActivity.class);
             startActivity(intent);
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantActivity.this, MapsActivity.class);
+            startActivity(intent);
+        });
 
-              public void onClick(View v) {
-                  Intent intent = new Intent(CallingForInfo.this, MapsActivity.class);
-                  startActivity(intent);
-              }
-          });
-
-        fillRestScreen(getIntent().getStringExtra("id"));
+        fillRestScreen(getIntent().getStringExtra("id"), getIntent().getDoubleExtra("ratio", 0.5));
     }
-    public void fillRestScreen(String id) {
+
+    public void setData(String address, String phone, String name, String openingTiming,
+                        String website, String openClose, float rating, double teamRatio) {
+        this.address.setText(address);
+        this.phone.setText(phone);
+        this.name.setText(name);
+        this.openingTiming.setText(openingTiming);
+        this.website.setText(website);
+        this.openClose.setText(openClose);
+        this.rate.setRating(rating);
+        this.teamIcon.setImageResource(DatabaseCtl.getCorrectIconReport(teamRatio, this));
+    }
+
+    public void fillRestScreen(String id, double ratio) {
         Log.d("SCREEN", "Filling Screen");
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID,
                 Place.Field.ADDRESS,
@@ -110,7 +107,7 @@ public class CallingForInfo extends AppCompatActivity {
             String uri_str = (uri == null ? "Unknown" : uri.toString());
             float rating = (place.getRating() == null ? 0f : place.getRating().floatValue());
             setData(place.getAddress(), place.getPhoneNumber(), place.getName(),
-                    hours, uri_str, open, rating);
+                    hours, uri_str, open, rating, ratio);
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 final ApiException apiException = (ApiException) exception;
